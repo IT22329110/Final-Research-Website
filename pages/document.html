@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documents · SafeDrive System</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --black:   #05080f;
+            --deep:    #0a0f1e;
+            --card:    #0d1528;
+            --border:  rgba(255,255,255,0.07);
+            --accent:  #00e5ff;
+            --accent2: #ff3c5f;
+            --accent3: #7b61ff;
+            --white:   #f0f4ff;
+            --muted:   #6b7a99;
+            --green:   #00e5b0;
+            --amber:   #ffb830;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--black);
+            color: var(--white);
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* ── HEADER ── */
+        header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 22px 48px;
+            background: rgba(5,8,15,0.72);
+            backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.55rem;
+            letter-spacing: 3px;
+            color: var(--accent);
+            text-shadow: 0 0 20px rgba(0,229,255,0.45);
+        }
+
+        nav { display: flex; gap: 6px; }
+
+        nav a {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--muted);
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 4px;
+            border: 1px solid transparent;
+            transition: all 0.25s;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--accent);
+            border-color: rgba(0,229,255,0.25);
+            background: rgba(0,229,255,0.06);
+        }
+
+        /* ── PAGE HERO ── */
+        .page-hero {
+            padding: 160px 80px 70px;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .page-hero::before {
+            content: 'DOCUMENTS';
+            position: absolute;
+            top: 95px; left: 55px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(4rem, 10vw, 10rem);
+            color: rgba(255,255,255,0.022);
+            letter-spacing: 8px;
+            pointer-events: none;
+            user-select: none;
+            line-height: 1;
+            white-space: nowrap;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 28px;
+            animation: fadeUp 0.7s ease both;
+        }
+
+        .breadcrumb span { color: var(--accent); }
+        .breadcrumb::before { content: '//'; color: var(--accent3); }
+
+        .page-hero h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3rem, 7vw, 6rem);
+            letter-spacing: 2px;
+            line-height: 1;
+            animation: fadeUp 0.8s 0.1s ease both;
+        }
+
+        .page-hero h1 em {
+            font-style: normal;
+            color: var(--accent);
+        }
+
+        .page-hero .subtitle {
+            margin-top: 18px;
+            font-size: 1rem;
+            color: var(--muted);
+            max-width: 500px;
+            line-height: 1.7;
+            animation: fadeUp 0.8s 0.2s ease both;
+        }
+
+        /* ── SUMMARY BAR ── */
+        .summary-bar {
+            margin: 0 80px;
+            display: flex;
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            animation: fadeUp 0.8s 0.3s ease both;
+        }
+
+        .summary-item {
+            flex: 1;
+            background: var(--deep);
+            padding: 22px 32px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .summary-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .summary-dot.green  { background: var(--green);  box-shadow: 0 0 10px var(--green); }
+        .summary-dot.amber  { background: var(--amber);  box-shadow: 0 0 10px var(--amber); }
+        .summary-dot.accent { background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+
+        .summary-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        .summary-label strong {
+            display: block;
+            font-size: 1.1rem;
+            font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 1px;
+            color: var(--white);
+        }
+
+        /* ── DIVIDER ── */
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, var(--accent), var(--accent3), transparent);
+            margin: 40px 80px 0;
+            opacity: 0.35;
+        }
+
+        /* ── DOCUMENTS SECTION ── */
+        .documents-section {
+            padding: 60px 80px 120px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* ── TABLE HEADER ── */
+        .table-header {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.2fr;
+            gap: 16px;
+            padding: 0 28px 14px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--muted);
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2px;
+        }
+
+        /* ── DOC CARDS ── */
+        .doc-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .doc-card {
+            background: var(--card);
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.2fr;
+            align-items: center;
+            gap: 16px;
+            padding: 26px 28px;
+            position: relative;
+            overflow: hidden;
+            transition: background 0.25s;
+            cursor: default;
+        }
+
+        .doc-card:hover { background: #111a35; }
+
+        .doc-card::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 3px;
+            background: var(--card-accent, var(--accent));
+            transform: scaleY(0);
+            transition: transform 0.3s;
+        }
+
+        .doc-card:hover::before { transform: scaleY(1); }
+
+        /* Section header rows */
+        .doc-card.section-row {
+            background: rgba(255,255,255,0.02);
+            padding: 14px 28px;
+            border-bottom: 1px solid var(--border);
+            cursor: default;
+        }
+
+        .doc-card.section-row:hover { background: rgba(255,255,255,0.02); }
+        .doc-card.section-row::before { display: none; }
+
+        .section-row-label {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            color: var(--muted);
+            grid-column: 1 / -1;
+        }
+
+        /* Doc name cell */
+        .doc-name {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .doc-icon {
+            width: 36px; height: 36px;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+            transition: all 0.25s;
+        }
+
+        .doc-card:hover .doc-icon {
+            background: rgba(0,229,255,0.08);
+            border-color: rgba(0,229,255,0.2);
+        }
+
+        .doc-title-text {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--white);
+            line-height: 1.3;
+        }
+
+        .doc-sub {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.58rem;
+            letter-spacing: 1px;
+            color: var(--muted);
+            margin-top: 3px;
+        }
+
+        /* Type pill */
+        .doc-type {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.62rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        /* Status badge */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 5px 12px;
+            border-radius: 3px;
+            width: fit-content;
+        }
+
+        .status-badge::before {
+            content: '';
+            width: 5px; height: 5px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .status-badge.available {
+            color: var(--green);
+            background: rgba(0,229,176,0.08);
+            border: 1px solid rgba(0,229,176,0.2);
+        }
+
+        .status-badge.available::before {
+            background: var(--green);
+            box-shadow: 0 0 6px var(--green);
+            animation: pulse 2s infinite;
+        }
+
+        .status-badge.pending {
+            color: var(--amber);
+            background: rgba(255,184,48,0.08);
+            border: 1px solid rgba(255,184,48,0.15);
+        }
+
+        .status-badge.pending::before {
+            background: var(--amber);
+        }
+
+        @keyframes pulse {
+            0%,100% { opacity:1; transform:scale(1); }
+            50%      { opacity:0.5; transform:scale(0.7); }
+        }
+
+        /* Action button */
+        .doc-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.62rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: all 0.25s;
+            width: fit-content;
+        }
+
+        .doc-action.view {
+            color: var(--accent);
+            border: 1px solid rgba(0,229,255,0.2);
+            background: rgba(0,229,255,0.05);
+        }
+
+        .doc-action.view:hover {
+            background: rgba(0,229,255,0.12);
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(0,229,255,0.15);
+            transform: translateY(-1px);
+        }
+
+        .doc-action.soon {
+            color: var(--muted);
+            border: 1px solid var(--border);
+            background: transparent;
+            cursor: default;
+        }
+
+        /* Sub-doc list (Final Documents) */
+        .subdoc-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 1px;
+        }
+
+        .subdoc-row {
+            background: rgba(10,15,30,0.8);
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.2fr;
+            align-items: center;
+            gap: 16px;
+            padding: 20px 28px 20px 56px;
+            transition: background 0.25s;
+            position: relative;
+        }
+
+        .subdoc-row::before {
+            content: '└';
+            position: absolute;
+            left: 34px;
+            color: var(--border);
+            font-size: 0.8rem;
+        }
+
+        .subdoc-row:hover { background: #0e1628; }
+
+        /* ── FOOTER ── */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 36px 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .footer-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 3px;
+            color: var(--accent);
+        }
+
+        .footer-copy {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 1.5px;
+            color: var(--muted);
+        }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeUp {
+            from { opacity:0; transform:translateY(20px); }
+            to   { opacity:1; transform:translateY(0); }
+        }
+
+        .doc-card, .subdoc-row {
+            animation: fadeUp 0.5s ease both;
+        }
+
+        .doc-list > .doc-card:nth-child(1) { animation-delay: 0.05s; }
+        .doc-list > .doc-card:nth-child(2) { animation-delay: 0.10s; }
+        .doc-list > .doc-card:nth-child(3) { animation-delay: 0.15s; }
+        .doc-list > .doc-card:nth-child(4) { animation-delay: 0.20s; }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 900px) {
+            .table-header { display: none; }
+            .doc-card, .subdoc-row {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            .subdoc-row { padding-left: 28px; }
+            .subdoc-row::before { display: none; }
+            .summary-bar { flex-direction: column; }
+        }
+
+        @media (max-width: 760px) {
+            header { padding: 18px 24px; }
+            nav a { padding: 6px 9px; font-size: 0.6rem; }
+            .page-hero { padding: 140px 32px 60px; }
+            .page-hero::before { display: none; }
+            .summary-bar { margin: 0 32px; }
+            .divider { margin: 40px 32px 0; }
+            .documents-section { padding: 60px 32px 80px; }
+            footer { flex-direction: column; gap: 12px; padding: 28px 32px; }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ── HEADER ── -->
+<header>
+    <div class="logo">SafeDrive</div>
+    <nav>
+        <a href="../pages/index.html">Home</a>
+        <a href="../pages/domain.html">Domain</a>
+        <a href="../pages/milestone.html">Milestones</a>
+        <a href="../pages/document.html" class="active">Documents</a>
+        <a href="../pages/presentation.html">Presentations</a>
+        <a href="../pages/about.html">About</a>
+        <a href="../pages/contact.html">Contact</a>
+    </nav>
+</header>
+
+<!-- ── PAGE HERO ── -->
+<div class="page-hero">
+    <div class="breadcrumb">SafeDrive System <span>/ Documents</span></div>
+    <h1>Project <em>Documents</em></h1>
+    <p class="subtitle">Access all submitted reports, checklists, and final deliverables for the SafeDrive research project.</p>
+</div>
+
+<!-- ── SUMMARY BAR ── -->
+<div class="summary-bar">
+    <div class="summary-item">
+        <div class="summary-dot green"></div>
+        <div class="summary-label">
+            <strong>2</strong>
+            Available
+        </div>
+    </div>
+    <div class="summary-item">
+        <div class="summary-dot amber"></div>
+        <div class="summary-label">
+            <strong>5</strong>
+            Pending
+        </div>
+    </div>
+    <div class="summary-item">
+        <div class="summary-dot accent"></div>
+        <div class="summary-label">
+            <strong>7</strong>
+            Total Documents
+        </div>
+    </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ── DOCUMENTS SECTION ── -->
+<div class="documents-section">
+
+    <div class="table-header">
+        <span>Document</span>
+        <span>Type</span>
+        <span>Status</span>
+        <span>Action</span>
+    </div>
+
+    <div class="doc-list">
+
+        <!-- Project Charter -->
+        <div class="doc-card" style="--card-accent: #00e5ff;">
+            <div class="doc-name">
+                <div class="doc-icon">📋</div>
+                <div>
+                    <div class="doc-title-text">Project Charter</div>
+                    <div class="doc-sub">Scope · Objectives · Stakeholders</div>
+                </div>
+            </div>
+            <div class="doc-type">Charter</div>
+            <div><span class="status-badge available">Available</span></div>
+            <div><a href="#" target="_blank" class="doc-action view">↗ View Doc</a></div>
+        </div>
+
+        <!-- Proposal -->
+        <div class="doc-card" style="--card-accent: #7b61ff;">
+            <div class="doc-name">
+                <div class="doc-icon">📄</div>
+                <div>
+                    <div class="doc-title-text">Proposal Document</div>
+                    <div class="doc-sub">Problem Statement · Research Goals</div>
+                </div>
+            </div>
+            <div class="doc-type">Proposal</div>
+            <div><span class="status-badge available">Available</span></div>
+            <div><a href="#" target="_blank" class="doc-action view">↗ View Doc</a></div>
+        </div>
+
+        <!-- Checklist -->
+        <div class="doc-card" style="--card-accent: #ffb830;">
+            <div class="doc-name">
+                <div class="doc-icon">✅</div>
+                <div>
+                    <div class="doc-title-text">Checklist Documents</div>
+                    <div class="doc-sub">Assessment · Compliance · Review</div>
+                </div>
+            </div>
+            <div class="doc-type">Checklist</div>
+            <div><span class="status-badge pending">Pending</span></div>
+            <div><span class="doc-action soon">⏳ Coming Soon</span></div>
+        </div>
+
+        <!-- Final Docs header row -->
+        <div class="doc-card section-row">
+            <div class="section-row-label">// Final Documents — 4 items</div>
+        </div>
+
+        <!-- Final: Main -->
+        <div class="subdoc-row">
+            <div class="doc-name">
+                <div class="doc-icon">📘</div>
+                <div>
+                    <div class="doc-title-text">Main Document</div>
+                    <div class="doc-sub">Complete Research Report</div>
+                </div>
+            </div>
+            <div class="doc-type">Final</div>
+            <div><span class="status-badge pending">Pending</span></div>
+            <div><span class="doc-action soon">⏳ Coming Soon</span></div>
+        </div>
+
+        <div class="subdoc-row">
+            <div class="doc-name">
+                <div class="doc-icon">📗</div>
+                <div>
+                    <div class="doc-title-text">Document 1</div>
+                    <div class="doc-sub">Supporting Material</div>
+                </div>
+            </div>
+            <div class="doc-type">Final</div>
+            <div><span class="status-badge pending">Pending</span></div>
+            <div><span class="doc-action soon">⏳ Coming Soon</span></div>
+        </div>
+
+        <div class="subdoc-row">
+            <div class="doc-name">
+                <div class="doc-icon">📙</div>
+                <div>
+                    <div class="doc-title-text">Document 2</div>
+                    <div class="doc-sub">Supporting Material</div>
+                </div>
+            </div>
+            <div class="doc-type">Final</div>
+            <div><span class="status-badge pending">Pending</span></div>
+            <div><span class="doc-action soon">⏳ Coming Soon</span></div>
+        </div>
+
+        <div class="subdoc-row">
+            <div class="doc-name">
+                <div class="doc-icon">📕</div>
+                <div>
+                    <div class="doc-title-text">Document 3</div>
+                    <div class="doc-sub">Supporting Material</div>
+                </div>
+            </div>
+            <div class="doc-type">Final</div>
+            <div><span class="status-badge pending">Pending</span></div>
+            <div><span class="doc-action soon">⏳ Coming Soon</span></div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+    <div class="footer-logo">SafeDrive System</div>
+    <div class="footer-copy">© 2026 SafeDrive System · All Rights Reserved</div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About · SafeDrive System</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --black:   #05080f;
+            --deep:    #0a0f1e;
+            --card:    #0d1528;
+            --border:  rgba(255,255,255,0.07);
+            --accent:  #00e5ff;
+            --accent2: #ff3c5f;
+            --accent3: #7b61ff;
+            --white:   #f0f4ff;
+            --muted:   #6b7a99;
+            --green:   #00e5b0;
+            --amber:   #ffb830;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--black);
+            color: var(--white);
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* ── HEADER ── */
+        header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 22px 48px;
+            background: rgba(5,8,15,0.82);
+            backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.55rem;
+            letter-spacing: 3px;
+            color: var(--accent);
+            text-shadow: 0 0 20px rgba(0,229,255,0.45);
+        }
+
+        nav { display: flex; gap: 6px; }
+
+        nav a {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--muted);
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 4px;
+            border: 1px solid transparent;
+            transition: all 0.25s;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--accent);
+            border-color: rgba(0,229,255,0.25);
+            background: rgba(0,229,255,0.06);
+        }
+
+        /* ── PAGE HERO ── */
+        .page-hero {
+            padding: 160px 80px 70px;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-hero::before {
+            content: 'TEAM';
+            position: absolute;
+            top: 90px; right: 40px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(5rem, 13vw, 12rem);
+            color: rgba(255,255,255,0.022);
+            letter-spacing: 8px;
+            pointer-events: none;
+            user-select: none;
+            line-height: 1;
+            white-space: nowrap;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 28px;
+            animation: fadeUp 0.7s ease both;
+        }
+
+        .breadcrumb span { color: var(--accent); }
+        .breadcrumb::before { content: '//'; color: var(--accent3); }
+
+        .page-hero h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3rem, 7vw, 6rem);
+            letter-spacing: 2px;
+            line-height: 1;
+            animation: fadeUp 0.8s 0.1s ease both;
+        }
+
+        .page-hero h1 em {
+            font-style: normal;
+            color: var(--accent);
+        }
+
+        .page-hero .subtitle {
+            margin-top: 18px;
+            font-size: 1rem;
+            color: var(--muted);
+            max-width: 520px;
+            line-height: 1.7;
+            animation: fadeUp 0.8s 0.2s ease both;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 36px;
+            margin-top: 36px;
+            animation: fadeUp 0.8s 0.3s ease both;
+        }
+
+        .stat-item .num {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.4rem;
+            letter-spacing: 1px;
+            color: var(--accent);
+            line-height: 1;
+        }
+
+        .stat-item .lbl {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.55rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        /* ── DIVIDER ── */
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, var(--accent), var(--accent3), transparent);
+            margin: 0 80px;
+            opacity: 0.35;
+        }
+
+        /* ── TEAM SECTION ── */
+        .team-section {
+            padding: 60px 80px 120px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            animation: fadeUp 0.7s 0.25s ease both;
+        }
+
+        .section-meta-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .section-meta-label span { color: var(--accent); }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        /* ── TEAM CARD ── */
+        .team-card {
+            background: var(--card);
+            padding: 52px 44px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            transition: background 0.3s;
+        }
+
+        .team-card:hover { background: #111e38; }
+
+        /* Top accent bar */
+        .team-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--c1, var(--accent)), var(--c2, var(--accent3)));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.45s cubic-bezier(0.16,1,0.3,1);
+        }
+
+        .team-card:hover::before { transform: scaleX(1); }
+
+        /* Radial glow */
+        .team-card::after {
+            content: '';
+            position: absolute;
+            bottom: -80px; right: -80px;
+            width: 240px; height: 240px;
+            background: radial-gradient(circle, var(--glow, rgba(0,229,255,0.06)) 0%, transparent 70%);
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.4s;
+            pointer-events: none;
+        }
+
+        .team-card:hover::after { opacity: 1; }
+
+        /* Color variants */
+        .team-card:nth-child(1) { --c1:#00e5ff; --c2:#7b61ff; --glow:rgba(0,229,255,0.07); }
+        .team-card:nth-child(2) { --c1:#ff3c5f; --c2:#ffb830; --glow:rgba(255,60,95,0.07); }
+        .team-card:nth-child(3) { --c1:#7b61ff; --c2:#00e5ff; --glow:rgba(123,97,255,0.07); }
+        .team-card:nth-child(4) { --c1:#ffb830; --c2:#ff3c5f; --glow:rgba(255,184,48,0.07); }
+
+        /* Card number */
+        .card-num {
+            position: absolute;
+            top: 28px; right: 36px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 5rem;
+            line-height: 1;
+            color: rgba(255,255,255,0.03);
+            transition: color 0.3s;
+            pointer-events: none;
+        }
+
+        .team-card:hover .card-num { color: rgba(255,255,255,0.055); }
+
+        /* Avatar */
+        .avatar {
+            width: 76px; height: 76px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+            margin-bottom: 22px;
+            overflow: hidden;
+            transition: border-color 0.3s;
+        }
+
+        .team-card:hover .avatar { border-color: var(--c1, var(--accent)); }
+
+        .avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+        .av1 { background: rgba(0,229,255,0.07); color: var(--accent); }
+        .av2 { background: rgba(255,60,95,0.07);  color: var(--accent2); }
+        .av3 { background: rgba(123,97,255,0.07); color: var(--accent3); }
+        .av4 { background: rgba(255,184,48,0.07); color: var(--amber); }
+
+        /* Card content */
+        .card-tag {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--c1, var(--accent));
+            margin-bottom: 8px;
+        }
+
+        .card-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.9rem;
+            letter-spacing: 1.5px;
+            color: var(--white);
+            margin-bottom: 10px;
+            transition: color 0.25s;
+        }
+
+        .team-card:hover .card-name { color: var(--c1, var(--accent)); }
+
+        .role-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 5px 12px;
+            border-radius: 3px;
+            border: 1px solid;
+            margin-bottom: 20px;
+        }
+
+        .rb1 { color: var(--accent);  background: rgba(0,229,255,0.07);  border-color: rgba(0,229,255,0.22); }
+        .rb2 { color: var(--accent2); background: rgba(255,60,95,0.07);  border-color: rgba(255,60,95,0.22); }
+        .rb3 { color: var(--accent3); background: rgba(123,97,255,0.07); border-color: rgba(123,97,255,0.22); }
+        .rb4 { color: var(--amber);   background: rgba(255,184,48,0.07); border-color: rgba(255,184,48,0.22); }
+
+        .card-sep {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 0 0 16px;
+        }
+
+        .info-row {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-size: 0.83rem;
+            color: var(--muted);
+            margin-bottom: 10px;
+        }
+
+        .info-row i { font-size: 15px; flex-shrink: 0; }
+
+        .achieve-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.58rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--green);
+            padding: 5px 11px;
+            border-radius: 3px;
+            border: 1px solid rgba(0,229,176,0.2);
+            background: rgba(0,229,176,0.06);
+            margin-top: 4px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 8px;
+            margin-top: 20px;
+            padding-top: 18px;
+            border-top: 1px solid var(--border);
+        }
+
+        .social-icons a {
+            width: 34px; height: 34px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 15px;
+            transition: all 0.25s;
+        }
+
+        .social-icons a:hover {
+            color: var(--c1, var(--accent));
+            border-color: var(--c1, var(--accent));
+            background: rgba(0,229,255,0.06);
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 36px 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .footer-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 3px;
+            color: var(--accent);
+        }
+
+        .footer-copy {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 1.5px;
+            color: var(--muted);
+        }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .team-card { animation: fadeUp 0.6s ease both; }
+        .team-card:nth-child(1) { animation-delay: 0.05s; }
+        .team-card:nth-child(2) { animation-delay: 0.14s; }
+        .team-card:nth-child(3) { animation-delay: 0.23s; }
+        .team-card:nth-child(4) { animation-delay: 0.32s; }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 900px) {
+            .team-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 760px) {
+            header { padding: 18px 24px; }
+            nav a { padding: 6px 9px; font-size: 0.6rem; }
+            .page-hero { padding: 140px 32px 60px; }
+            .page-hero::before { display: none; }
+            .divider { margin: 0 32px; }
+            .team-section { padding: 60px 32px 80px; }
+            .team-card { padding: 36px 28px; }
+            footer { flex-direction: column; gap: 12px; padding: 28px 32px; }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ── HEADER ── -->
+<header>
+    <div class="logo">SafeDrive</div>
+    <nav>
+        <a href="../pages/index.html">Home</a>
+        <a href="../pages/domain.html">Domain</a>
+        <a href="../pages/milestone.html">Milestones</a>
+        <a href="../pages/document.html">Documents</a>
+        <a href="../pages/presentation.html">Presentations</a>
+        <a href="../pages/about.html" class="active">About</a>
+        <a href="../pages/contact.html">Contact</a>
+    </nav>
+</header>
+
+<!-- ── PAGE HERO ── -->
+<div class="page-hero">
+    <div class="breadcrumb">SafeDrive System <span>/ About</span></div>
+    <h1>Meet the <em>Team</em></h1>
+    <p class="subtitle">The engineers and specialists driving the SafeDrive research project — from ML pipelines to real-time risk detection systems.</p>
+    <div class="hero-stats">
+        <div class="stat-item">
+            <div class="num">4</div>
+            <div class="lbl">Members</div>
+        </div>
+        <div class="stat-item">
+            <div class="num">3</div>
+            <div class="lbl">Roles</div>
+        </div>
+        <div class="stat-item">
+            <div class="num">2026</div>
+            <div class="lbl">Active</div>
+        </div>
+    </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ── TEAM SECTION ── -->
+<div class="team-section">
+
+    <div class="section-meta">
+        <div class="section-meta-label">
+            Showing <span>4 members</span> · 3 roles · 1 research project
+        </div>
+    </div>
+
+    <div class="team-grid">
+
+        <!-- MEMBER 1 -->
+        <div class="team-card">
+            <div class="card-num">01</div>
+
+            <!-- Replace initials with <img> when photo is ready -->
+            <div class="avatar av1">DT</div>
+            <div class="avatar"><img src="../images/Dilshan.jpeg" alt="Dilshan Theekshana"></div>
+
+            <div class="card-tag">01 — DevOps</div>
+            <div class="card-name">Dilshan Theekshana</div>
+            <span class="role-badge rb1">
+                <i class="ti ti-server"></i> DevOps Engineer
+            </span>
+
+            <hr class="card-sep">
+
+            <div class="info-row">
+                <i class="ti ti-mail"></i> theekshanadilshan758@gmail.com
+            </div>
+            <div class="achieve-tag">
+                <i class="ti ti-award"></i> Python Certification
+            </div>
+
+            <div class="social-icons">
+                <a href="#" target="_blank" aria-label="LinkedIn"><i class="ti ti-brand-linkedin"></i></a>
+                <a href="#" target="_blank" aria-label="Facebook"><i class="ti ti-brand-facebook"></i></a>
+                <a href="#" target="_blank" aria-label="Instagram"><i class="ti ti-brand-instagram"></i></a>
+            </div>
+        </div>
+
+        <!-- MEMBER 2 -->
+        <div class="team-card">
+            <div class="card-num">02</div>
+
+            <div class="avatar av2">R</div>
+             <div class="avatar"><img src="../images/rashid.jpeg" alt="Rashid"></div>
+
+            <div class="card-tag">02 — Dev</div>
+            <div class="card-name">Rashid</div>
+            <span class="role-badge rb2">
+                <i class="ti ti-code"></i> Developer
+            </span>
+
+            <hr class="card-sep">
+
+            <div class="info-row">
+                <i class="ti ti-mail"></i> member@email.com
+            </div>
+            <div class="achieve-tag">
+                <i class="ti ti-palette"></i> UI/UX Specialist
+            </div>
+
+            <div class="social-icons">
+                <a href="#" target="_blank" aria-label="LinkedIn"><i class="ti ti-brand-linkedin"></i></a>
+                <a href="#" target="_blank" aria-label="Facebook"><i class="ti ti-brand-facebook"></i></a>
+                <a href="#" target="_blank" aria-label="Instagram"><i class="ti ti-brand-instagram"></i></a>
+            </div>
+        </div>
+
+        <!-- MEMBER 3 -->
+        <div class="team-card">
+            <div class="card-num">03</div>
+
+            <div class="avatar av3">D</div>
+             <div class="avatar"><img src="../images/dilthara.jpeg" alt="Dilthara"></div> 
+
+            <div class="card-tag">03 — QA</div>
+            <div class="card-name">Dilthara</div>
+            <span class="role-badge rb3">
+                <i class="ti ti-shield-check"></i> QA Engineer
+            </span>
+
+            <hr class="card-sep">
+
+            <div class="info-row">
+                <i class="ti ti-mail"></i> member@email.com
+            </div>
+            <div class="achieve-tag">
+                <i class="ti ti-certificate"></i> Testing Expert
+            </div>
+
+            <div class="social-icons">
+                <a href="#" target="_blank" aria-label="LinkedIn"><i class="ti ti-brand-linkedin"></i></a>
+                <a href="#" target="_blank" aria-label="Facebook"><i class="ti ti-brand-facebook"></i></a>
+                <a href="#" target="_blank" aria-label="Instagram"><i class="ti ti-brand-instagram"></i></a>
+            </div>
+        </div>
+
+        <!-- MEMBER 4 -->
+        <div class="team-card">
+            <div class="card-num">04</div>
+
+            <div class="avatar av4">S</div>
+            <div class="avatar"><img src="../images/shehani.jpeg" alt="Shehani"></div> 
+
+            <div class="card-tag">04 — QA</div>
+            <div class="card-name">Shehani</div>
+            <span class="role-badge rb4">
+                <i class="ti ti-shield-check"></i> QA Engineer
+            </span>
+
+            <hr class="card-sep">
+
+            <div class="info-row">
+                <i class="ti ti-mail"></i> member@email.com
+            </div>
+            <div class="achieve-tag">
+                <i class="ti ti-certificate"></i> Testing Expert
+            </div>
+
+            <div class="social-icons">
+                <a href="#" target="_blank" aria-label="LinkedIn"><i class="ti ti-brand-linkedin"></i></a>
+                <a href="#" target="_blank" aria-label="Facebook"><i class="ti ti-brand-facebook"></i></a>
+                <a href="#" target="_blank" aria-label="Instagram"><i class="ti ti-brand-instagram"></i></a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+    <div class="footer-logo">SafeDrive System</div>
+    <div class="footer-copy">© 2026 SafeDrive System · All Rights Reserved</div>
+</footer>
+
+</body>
+</html>

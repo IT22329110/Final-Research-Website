@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentations · SafeDrive System</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --black:   #05080f;
+            --deep:    #0a0f1e;
+            --card:    #0d1528;
+            --border:  rgba(255,255,255,0.07);
+            --accent:  #00e5ff;
+            --accent2: #ff3c5f;
+            --accent3: #7b61ff;
+            --white:   #f0f4ff;
+            --muted:   #6b7a99;
+            --green:   #00e5b0;
+            --amber:   #ffb830;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--black);
+            color: var(--white);
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* ── HEADER ── */
+        header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 22px 48px;
+            background: rgba(5,8,15,0.72);
+            backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.55rem;
+            letter-spacing: 3px;
+            color: var(--accent);
+            text-shadow: 0 0 20px rgba(0,229,255,0.45);
+        }
+
+        nav { display: flex; gap: 6px; }
+
+        nav a {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--muted);
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 4px;
+            border: 1px solid transparent;
+            transition: all 0.25s;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--accent);
+            border-color: rgba(0,229,255,0.25);
+            background: rgba(0,229,255,0.06);
+        }
+
+        /* ── PAGE HERO ── */
+        .page-hero {
+            padding: 160px 80px 70px;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .page-hero::before {
+            content: 'SLIDES';
+            position: absolute;
+            top: 95px; left: 55px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(5rem, 13vw, 13rem);
+            color: rgba(255,255,255,0.022);
+            letter-spacing: 8px;
+            pointer-events: none;
+            user-select: none;
+            line-height: 1;
+            white-space: nowrap;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 28px;
+            animation: fadeUp 0.7s ease both;
+        }
+
+        .breadcrumb span { color: var(--accent); }
+        .breadcrumb::before { content: '//'; color: var(--accent3); }
+
+        .page-hero h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3rem, 7vw, 6rem);
+            letter-spacing: 2px;
+            line-height: 1;
+            animation: fadeUp 0.8s 0.1s ease both;
+        }
+
+        .page-hero h1 em {
+            font-style: normal;
+            color: var(--accent);
+        }
+
+        .page-hero .subtitle {
+            margin-top: 18px;
+            font-size: 1rem;
+            color: var(--muted);
+            max-width: 500px;
+            line-height: 1.7;
+            animation: fadeUp 0.8s 0.2s ease both;
+        }
+
+        /* ── DIVIDER ── */
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, var(--accent), var(--accent3), transparent);
+            margin: 0 80px;
+            opacity: 0.35;
+        }
+
+        /* ── PRESENTATIONS GRID ── */
+        .presentations-section {
+            padding: 70px 80px 120px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            animation: fadeUp 0.7s 0.25s ease both;
+        }
+
+        .section-meta-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .section-meta-label span { color: var(--accent); }
+
+        .pres-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        /* ── PRESENTATION CARD ── */
+        .pres-card {
+            background: var(--card);
+            padding: 52px 44px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            transition: background 0.3s;
+        }
+
+        .pres-card:hover { background: #111e38; }
+
+        /* Top accent bar */
+        .pres-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--c1, var(--accent)), var(--c2, var(--accent3)));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.45s cubic-bezier(0.16,1,0.3,1);
+        }
+
+        .pres-card:hover::before { transform: scaleX(1); }
+
+        /* Radial glow */
+        .pres-card::after {
+            content: '';
+            position: absolute;
+            bottom: -80px; right: -80px;
+            width: 240px; height: 240px;
+            background: radial-gradient(circle, var(--glow, rgba(0,229,255,0.06)) 0%, transparent 70%);
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.4s;
+            pointer-events: none;
+        }
+
+        .pres-card:hover::after { opacity: 1; }
+
+        /* Color variants */
+        .pres-card:nth-child(1) { --c1:#00e5ff; --c2:#7b61ff; --glow:rgba(0,229,255,0.07); }
+        .pres-card:nth-child(2) { --c1:#ff3c5f; --c2:#ffb830; --glow:rgba(255,60,95,0.07); }
+        .pres-card:nth-child(3) { --c1:#7b61ff; --c2:#00e5ff; --glow:rgba(123,97,255,0.07); }
+        .pres-card:nth-child(4) { --c1:#ffb830; --c2:#ff3c5f; --glow:rgba(255,184,48,0.07); }
+
+        /* Card number */
+        .pres-num {
+            position: absolute;
+            top: 28px; right: 36px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 5rem;
+            line-height: 1;
+            color: rgba(255,255,255,0.03);
+            transition: color 0.3s;
+            pointer-events: none;
+        }
+
+        .pres-card:hover .pres-num { color: rgba(255,255,255,0.055); }
+
+        /* Slide preview mockup */
+        .slide-preview {
+            width: 100%;
+            aspect-ratio: 16/9;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--deep);
+            margin-bottom: 28px;
+            overflow: hidden;
+            position: relative;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .pres-card:hover .slide-preview {
+            border-color: rgba(255,255,255,0.12);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        }
+
+        /* Slide mockup interior */
+        .slide-inner {
+            width: 100%; height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 20px;
+        }
+
+        .slide-bar {
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255,255,255,0.06);
+        }
+
+        .slide-bar.w80 { width: 80%; }
+        .slide-bar.w60 { width: 60%; }
+        .slide-bar.w45 { width: 45%; }
+        .slide-bar.w70 { width: 70%; }
+        .slide-bar.accent { background: var(--c1, rgba(0,229,255,0.3)); opacity: 0.4; height: 8px; }
+
+        .slide-icon-big {
+            font-size: 2rem;
+            opacity: 0.3;
+            margin-bottom: 6px;
+        }
+
+        /* Pending overlay */
+        .slide-pending {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: rgba(5,8,15,0.7);
+            backdrop-filter: blur(4px);
+        }
+
+        .slide-pending-icon { font-size: 1.6rem; opacity: 0.4; }
+
+        .slide-pending-text {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.58rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        /* Card content */
+        .pres-tag {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--c1, var(--accent));
+            margin-bottom: 10px;
+        }
+
+        .pres-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.7rem;
+            letter-spacing: 1.5px;
+            color: var(--white);
+            margin-bottom: 10px;
+            transition: color 0.25s;
+        }
+
+        .pres-card:hover .pres-title { color: var(--c1, var(--accent)); }
+
+        .pres-desc {
+            font-size: 0.86rem;
+            line-height: 1.7;
+            color: var(--muted);
+            margin-bottom: 28px;
+            flex: 1;
+        }
+
+        /* Status + actions row */
+        .pres-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 5px 12px;
+            border-radius: 3px;
+        }
+
+        .status-badge::before {
+            content: '';
+            width: 5px; height: 5px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .status-badge.available {
+            color: var(--green);
+            background: rgba(0,229,176,0.08);
+            border: 1px solid rgba(0,229,176,0.2);
+        }
+
+        .status-badge.available::before {
+            background: var(--green);
+            box-shadow: 0 0 6px var(--green);
+            animation: pulse 2s infinite;
+        }
+
+        .status-badge.pending {
+            color: var(--amber);
+            background: rgba(255,184,48,0.08);
+            border: 1px solid rgba(255,184,48,0.15);
+        }
+
+        .status-badge.pending::before { background: var(--amber); }
+
+        @keyframes pulse {
+            0%,100% { opacity:1; transform:scale(1); }
+            50%      { opacity:0.4; transform:scale(0.7); }
+        }
+
+        .pres-actions { display: flex; gap: 8px; }
+
+        .btn-view {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: all 0.25s;
+            border: 1px solid rgba(0,229,255,0.2);
+            color: var(--accent);
+            background: rgba(0,229,255,0.05);
+        }
+
+        .btn-view:hover {
+            background: rgba(0,229,255,0.12);
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(0,229,255,0.15);
+            transform: translateY(-1px);
+        }
+
+        .btn-dl {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: all 0.25s;
+            border: 1px solid rgba(123,97,255,0.2);
+            color: var(--accent3);
+            background: rgba(123,97,255,0.05);
+        }
+
+        .btn-dl:hover {
+            background: rgba(123,97,255,0.12);
+            border-color: var(--accent3);
+            box-shadow: 0 0 20px rgba(123,97,255,0.15);
+            transform: translateY(-1px);
+        }
+
+        .btn-soon {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 8px 16px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            color: var(--muted);
+            cursor: default;
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 36px 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .footer-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 3px;
+            color: var(--accent);
+        }
+
+        .footer-copy {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 1.5px;
+            color: var(--muted);
+        }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeUp {
+            from { opacity:0; transform:translateY(20px); }
+            to   { opacity:1; transform:translateY(0); }
+        }
+
+        .pres-card { animation: fadeUp 0.6s ease both; }
+        .pres-card:nth-child(1) { animation-delay: 0.05s; }
+        .pres-card:nth-child(2) { animation-delay: 0.14s; }
+        .pres-card:nth-child(3) { animation-delay: 0.23s; }
+        .pres-card:nth-child(4) { animation-delay: 0.32s; }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 900px) {
+            .pres-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 760px) {
+            header { padding: 18px 24px; }
+            nav a { padding: 6px 9px; font-size: 0.6rem; }
+            .page-hero { padding: 140px 32px 60px; }
+            .page-hero::before { display: none; }
+            .divider { margin: 0 32px; }
+            .presentations-section { padding: 60px 32px 80px; }
+            .pres-card { padding: 36px 28px; }
+            footer { flex-direction: column; gap: 12px; padding: 28px 32px; }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ── HEADER ── -->
+<header>
+    <div class="logo">SafeDrive</div>
+    <nav>
+        <a href="../pages/index.html">Home</a>
+        <a href="../pages/domain.html">Domain</a>
+        <a href="../pages/milestone.html">Milestones</a>
+        <a href="../pages/document.html">Documents</a>
+        <a href="../pages/presentation.html" class="active">Presentations</a>
+        <a href="../pages/about.html">About</a>
+        <a href="../pages/contact.html">Contact</a>
+    </nav>
+</header>
+
+<!-- ── PAGE HERO ── -->
+<div class="page-hero">
+    <div class="breadcrumb">SafeDrive System <span>/ Presentations</span></div>
+    <h1>Project <em>Presentations</em></h1>
+    <p class="subtitle">Access all slide decks — from initial proposal through to final system demonstration.</p>
+</div>
+
+<div class="divider"></div>
+
+<!-- ── PRESENTATIONS SECTION ── -->
+<div class="presentations-section">
+
+    <div class="section-meta">
+        <div class="section-meta-label">
+            Showing <span>4 presentations</span> · 3 available · 1 pending
+        </div>
+    </div>
+
+    <div class="pres-grid">
+
+        <!-- ── Proposal ── -->
+        <div class="pres-card">
+            <div class="pres-num">01</div>
+
+            <div class="slide-preview">
+                <div class="slide-inner">
+                    <div class="slide-icon-big">📋</div>
+                    <div class="slide-bar accent w60"></div>
+                    <div class="slide-bar w80"></div>
+                    <div class="slide-bar w45"></div>
+                    <div class="slide-bar w70"></div>
+                </div>
+            </div>
+
+            <div class="pres-tag">01 — Proposal</div>
+            <div class="pres-title">Proposal Presentation</div>
+            <div class="pres-desc">Initial idea pitch covering the problem statement, research objectives, proposed methodology, and expected outcomes for the SafeDrive system.</div>
+
+            <div class="pres-footer">
+                <span class="status-badge available">Available</span>
+                <div class="pres-actions">
+                    <a href="#" target="_blank" class="btn-view">↗ View Slides</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Progress 1 ── -->
+        <div class="pres-card">
+            <div class="pres-num">02</div>
+
+            <div class="slide-preview">
+                <div class="slide-inner">
+                    <div class="slide-icon-big">📊</div>
+                    <div class="slide-bar accent w70"></div>
+                    <div class="slide-bar w80"></div>
+                    <div class="slide-bar w55"></div>
+                    <div class="slide-bar w65"></div>
+                </div>
+            </div>
+
+            <div class="pres-tag">02 — Progress 1</div>
+            <div class="pres-title">Progress Presentation 1</div>
+            <div class="pres-desc">Evaluation of initial development milestones — early ML model results, data pipeline status, and updated literature review findings from the first phase.</div>
+
+            <div class="pres-footer">
+                <span class="status-badge available">Available</span>
+                <div class="pres-actions">
+                    <a href="#" target="_blank" class="btn-view">↗ View Slides</a>
+                    <a href="../files/PP1.pptx" download class="btn-dl">⬇ Download</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Progress 2 ── -->
+        <div class="pres-card">
+            <div class="pres-num">03</div>
+
+            <div class="slide-preview">
+                <div class="slide-inner">
+                    <div class="slide-icon-big">🔬</div>
+                    <div class="slide-bar accent w80"></div>
+                    <div class="slide-bar w60"></div>
+                    <div class="slide-bar w75"></div>
+                    <div class="slide-bar w50"></div>
+                </div>
+            </div>
+
+            <div class="pres-tag">03 — Progress 2</div>
+            <div class="pres-title">Progress Presentation 2</div>
+            <div class="pres-desc">Mid-level system demonstration featuring integrated components, live driver behavior detection, real-time risk scoring, and key improvements over PP1.</div>
+
+            <div class="pres-footer">
+                <span class="status-badge available">Available</span>
+                <div class="pres-actions">
+                    <a href="#" target="_blank" class="btn-view">↗ View Slides</a>
+                    <a href="../files/PP2.pptx" download class="btn-dl">⬇ Download</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Final ── -->
+        <div class="pres-card">
+            <div class="pres-num">04</div>
+
+            <div class="slide-preview">
+                <div class="slide-inner">
+                    <div class="slide-icon-big">🏁</div>
+                    <div class="slide-bar w60"></div>
+                    <div class="slide-bar w45"></div>
+                    <div class="slide-bar w70"></div>
+                </div>
+                <div class="slide-pending">
+                    <div class="slide-pending-icon">⏳</div>
+                    <div class="slide-pending-text">Not yet released</div>
+                </div>
+            </div>
+
+            <div class="pres-tag">04 — Final</div>
+            <div class="pres-title">Final Presentation</div>
+            <div class="pres-desc">Complete system demonstration — real-time alerts, fleet dashboard, cloud integration, and predictive risk engine. Scheduled for the Final Assessment phase.</div>
+
+            <div class="pres-footer">
+                <span class="status-badge pending">Pending</span>
+                <div class="pres-actions">
+                    <span class="btn-soon">⏳ Coming Soon</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+    <div class="footer-logo">SafeDrive System</div>
+    <div class="footer-copy">© 2026 SafeDrive System · All Rights Reserved</div>
+</footer>
+
+</body>
+</html>

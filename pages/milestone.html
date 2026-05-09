@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Milestones · SafeDrive System</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --black:   #05080f;
+            --deep:    #0a0f1e;
+            --card:    #0d1528;
+            --border:  rgba(255,255,255,0.07);
+            --accent:  #00e5ff;
+            --accent2: #ff3c5f;
+            --accent3: #7b61ff;
+            --accent4: #00e5b0;
+            --accent5: #ffb830;
+            --white:   #f0f4ff;
+            --muted:   #6b7a99;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--black);
+            color: var(--white);
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* ── HEADER ── */
+        header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 22px 48px;
+            background: rgba(5,8,15,0.72);
+            backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.55rem;
+            letter-spacing: 3px;
+            color: var(--accent);
+            text-shadow: 0 0 20px rgba(0,229,255,0.45);
+        }
+
+        nav { display: flex; gap: 6px; }
+
+        nav a {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--muted);
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 4px;
+            border: 1px solid transparent;
+            transition: all 0.25s;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--accent);
+            border-color: rgba(0,229,255,0.25);
+            background: rgba(0,229,255,0.06);
+        }
+
+        /* ── PAGE HERO ── */
+        .page-hero {
+            padding: 160px 80px 70px;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .page-hero::before {
+            content: 'MILESTONES';
+            position: absolute;
+            top: 95px; left: 55px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(4rem, 10vw, 10rem);
+            color: rgba(255,255,255,0.022);
+            letter-spacing: 8px;
+            pointer-events: none;
+            user-select: none;
+            line-height: 1;
+            white-space: nowrap;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 28px;
+            animation: fadeUp 0.7s ease both;
+        }
+
+        .breadcrumb span { color: var(--accent); }
+        .breadcrumb::before { content: '//'; color: var(--accent3); }
+
+        .page-hero h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3rem, 7vw, 6rem);
+            letter-spacing: 2px;
+            line-height: 1;
+            animation: fadeUp 0.8s 0.1s ease both;
+        }
+
+        .page-hero h1 em {
+            font-style: normal;
+            color: var(--accent);
+        }
+
+        .page-hero .subtitle {
+            margin-top: 18px;
+            font-size: 1rem;
+            color: var(--muted);
+            max-width: 500px;
+            line-height: 1.7;
+            animation: fadeUp 0.8s 0.2s ease both;
+        }
+
+        /* ── DIVIDER ── */
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, var(--accent), var(--accent3), transparent);
+            margin: 0 80px;
+            opacity: 0.35;
+        }
+
+        /* ── MAIN LAYOUT ── */
+        .milestones-layout {
+            padding: 70px 80px 120px;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1.4fr;
+            gap: 48px;
+            align-items: start;
+        }
+
+        /* ── MILESTONE CARDS (left) ── */
+        .milestone-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .m-card {
+            background: var(--card);
+            padding: 28px 32px;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: background 0.25s;
+            border-left: 3px solid transparent;
+        }
+
+        .m-card:hover { background: #0f1a32; }
+
+        .m-card.active {
+            background: #111e38;
+            border-left-color: var(--card-accent, var(--accent));
+        }
+
+        .m-card::after {
+            content: '→';
+            position: absolute;
+            right: 24px;
+            font-size: 0.9rem;
+            color: var(--muted);
+            opacity: 0;
+            transform: translateX(-6px);
+            transition: all 0.25s;
+        }
+
+        .m-card:hover::after, .m-card.active::after {
+            opacity: 1;
+            transform: translateX(0);
+            color: var(--card-accent, var(--accent));
+        }
+
+        .m-badge {
+            width: 40px; height: 40px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+            transition: all 0.25s;
+        }
+
+        .m-card.active .m-badge,
+        .m-card:hover .m-badge {
+            background: rgba(0,229,255,0.08);
+            border-color: var(--card-accent, var(--accent));
+        }
+
+        .m-info { flex: 1; min-width: 0; }
+
+        .m-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            color: var(--white);
+            margin-bottom: 4px;
+            transition: color 0.25s;
+        }
+
+        .m-card.active .m-title,
+        .m-card:hover .m-title { color: var(--card-accent, var(--accent)); }
+
+        .m-meta {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .m-weight {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            color: var(--card-accent, var(--accent));
+            opacity: 0.5;
+            transition: opacity 0.25s;
+            flex-shrink: 0;
+        }
+
+        .m-card.active .m-weight,
+        .m-card:hover .m-weight { opacity: 1; }
+
+        /* card accent colors */
+        .m-card:nth-child(1) { --card-accent: #00e5ff; }
+        .m-card:nth-child(2) { --card-accent: #ff3c5f; }
+        .m-card:nth-child(3) { --card-accent: #7b61ff; }
+        .m-card:nth-child(4) { --card-accent: #00e5b0; }
+        .m-card:nth-child(5) { --card-accent: #ffb830; }
+
+        /* ── DETAIL PANEL (right) ── */
+        .detail-panel {
+            background: var(--deep);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 52px 48px;
+            position: sticky;
+            top: 100px;
+            min-height: 420px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* decorative corner */
+        .detail-panel::before {
+            content: '';
+            position: absolute;
+            top: -80px; right: -80px;
+            width: 220px; height: 220px;
+            background: radial-gradient(circle, var(--panel-color, rgba(0,229,255,0.07)) 0%, transparent 70%);
+            border-radius: 50%;
+            transition: background 0.5s;
+        }
+
+        .detail-panel::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--panel-color2, var(--accent)), var(--accent3), transparent);
+            opacity: 0.6;
+            transition: background 0.5s;
+        }
+
+        /* empty state */
+        .empty-state {
+            text-align: center;
+            transition: opacity 0.3s;
+        }
+
+        .empty-icon {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+            opacity: 0.3;
+        }
+
+        .empty-text {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        /* filled state */
+        .detail-content { display: none; }
+        .detail-content.visible { display: block; animation: fadeUp 0.4s ease both; }
+
+        .detail-tag {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--panel-color2, var(--accent));
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .detail-tag::before {
+            content: '';
+            width: 6px; height: 6px;
+            background: var(--panel-color2, var(--accent));
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--panel-color2, var(--accent));
+        }
+
+        .detail-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(1.8rem, 3vw, 2.8rem);
+            letter-spacing: 1.5px;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            color: var(--white);
+        }
+
+        .detail-desc {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: rgba(240,244,255,0.65);
+            margin-bottom: 36px;
+            border-left: 2px solid var(--border);
+            padding-left: 18px;
+        }
+
+        .detail-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .stat-cell {
+            background: rgba(13,21,40,0.8);
+            padding: 20px 22px;
+        }
+
+        .stat-cell-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+
+        .stat-cell-value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.6rem;
+            letter-spacing: 1px;
+            color: var(--panel-color2, var(--accent));
+            line-height: 1;
+        }
+
+        /* progress bar */
+        .progress-wrap {
+            margin-top: 28px;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.62rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 10px;
+        }
+
+        .progress-track {
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--panel-color2, var(--accent)), var(--accent3));
+            border-radius: 2px;
+            width: 0%;
+            transition: width 0.7s cubic-bezier(0.16,1,0.3,1);
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 36px 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .footer-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 3px;
+            color: var(--accent);
+        }
+
+        .footer-copy {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 1.5px;
+            color: var(--muted);
+        }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeUp {
+            from { opacity:0; transform:translateY(20px); }
+            to   { opacity:1; transform:translateY(0); }
+        }
+
+        .m-card { animation: fadeUp 0.5s ease both; }
+        .m-card:nth-child(1) { animation-delay: 0.05s; }
+        .m-card:nth-child(2) { animation-delay: 0.12s; }
+        .m-card:nth-child(3) { animation-delay: 0.19s; }
+        .m-card:nth-child(4) { animation-delay: 0.26s; }
+        .m-card:nth-child(5) { animation-delay: 0.33s; }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 960px) {
+            .milestones-layout { grid-template-columns: 1fr; padding: 60px 32px 80px; }
+            .detail-panel { position: static; }
+        }
+
+        @media (max-width: 760px) {
+            header { padding: 18px 24px; }
+            nav a { padding: 6px 9px; font-size: 0.6rem; }
+            .page-hero { padding: 140px 32px 60px; }
+            .page-hero::before { display: none; }
+            .divider { margin: 0 32px; }
+            footer { flex-direction: column; gap: 12px; padding: 28px 32px; }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ── HEADER ── -->
+<header>
+    <div class="logo">SafeDrive</div>
+    <nav>
+        <a href="../pages/index.html">Home</a>
+        <a href="../pages/domain.html">Domain</a>
+        <a href="../pages/milestone.html" class="active">Milestones</a>
+        <a href="../pages/document.html">Documents</a>
+        <a href="../pages/presentation.html">Presentations</a>
+        <a href="../pages/about.html">About</a>
+        <a href="../pages/contact.html">Contact</a>
+    </nav>
+</header>
+
+<!-- ── PAGE HERO ── -->
+<div class="page-hero">
+    <div class="breadcrumb">SafeDrive System <span>/ Milestones</span></div>
+    <h1>Project <em>Milestones</em></h1>
+    <p class="subtitle">Track every assessment phase — from initial proposal through to final viva examination.</p>
+</div>
+
+<div class="divider"></div>
+
+<!-- ── MAIN LAYOUT ── -->
+<div class="milestones-layout">
+
+    <!-- LEFT: Milestone list -->
+    <div class="milestone-list">
+
+        <div class="m-card" onclick="showDetails('proposal', this)">
+            <div class="m-badge">📋</div>
+            <div class="m-info">
+                <div class="m-title">Project Proposal</div>
+                <div class="m-meta">January 2026</div>
+            </div>
+            <div class="m-weight">10%</div>
+        </div>
+
+        <div class="m-card" onclick="showDetails('pp1', this)">
+            <div class="m-badge">📊</div>
+            <div class="m-info">
+                <div class="m-title">Progress Presentation 1</div>
+                <div class="m-meta">March 2026</div>
+            </div>
+            <div class="m-weight">15%</div>
+        </div>
+
+        <div class="m-card" onclick="showDetails('pp2', this)">
+            <div class="m-badge">🔬</div>
+            <div class="m-info">
+                <div class="m-title">Progress Presentation 2</div>
+                <div class="m-meta">May 2026</div>
+            </div>
+            <div class="m-weight">20%</div>
+        </div>
+
+        <div class="m-card" onclick="showDetails('final', this)">
+            <div class="m-badge">🏁</div>
+            <div class="m-info">
+                <div class="m-title">Final Assessment</div>
+                <div class="m-meta">July 2026</div>
+            </div>
+            <div class="m-weight">35%</div>
+        </div>
+
+        <div class="m-card" onclick="showDetails('viva', this)">
+            <div class="m-badge">🎤</div>
+            <div class="m-info">
+                <div class="m-title">Viva</div>
+                <div class="m-meta">August 2026</div>
+            </div>
+            <div class="m-weight">20%</div>
+        </div>
+
+    </div>
+
+    <!-- RIGHT: Detail panel -->
+    <div class="detail-panel" id="detailPanel">
+
+        <div class="empty-state" id="emptyState">
+            <div class="empty-icon">◎</div>
+            <div class="empty-text">Select a milestone<br>to view details</div>
+        </div>
+
+        <div class="detail-content" id="detailContent">
+            <div class="detail-tag" id="detailTag">Assessment</div>
+            <div class="detail-title" id="detailTitle">—</div>
+            <div class="detail-desc" id="detailDesc">—</div>
+            <div class="detail-stats">
+                <div class="stat-cell">
+                    <div class="stat-cell-label">Scheduled Date</div>
+                    <div class="stat-cell-value" id="detailDate">—</div>
+                </div>
+                <div class="stat-cell">
+                    <div class="stat-cell-label">Weightage</div>
+                    <div class="stat-cell-value" id="detailMarks">—</div>
+                </div>
+            </div>
+            <div class="progress-wrap">
+                <div class="progress-label">
+                    <span>Assessment Weight</span>
+                    <span id="progressLabel">0%</span>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+    <div class="footer-logo">SafeDrive System</div>
+    <div class="footer-copy">© 2026 SafeDrive System · All Rights Reserved</div>
+</footer>
+
+<script>
+    const data = {
+        proposal: {
+            tag: '01 — Proposal',
+            title: 'Project Proposal',
+            desc: 'Initial idea presentation covering the problem statement, research objectives, and high-level system design. Establishes the foundation for the entire SafeDrive research initiative.',
+            date: 'Jan 2026',
+            marks: '10%',
+            progress: 10,
+            color: '#00e5ff',
+        },
+        pp1: {
+            tag: '02 — Progress 1',
+            title: 'Progress Presentation 1',
+            desc: 'Evaluation of initial development and research progress. Includes early ML model results, data collection pipeline status, and updated literature findings.',
+            date: 'Mar 2026',
+            marks: '15%',
+            progress: 15,
+            color: '#ff3c5f',
+        },
+        pp2: {
+            tag: '03 — Progress 2',
+            title: 'Progress Presentation 2',
+            desc: 'Mid-level system demonstration featuring integrated components, live driver behavior detection, and risk scoring. Key improvements over PP1 are highlighted.',
+            date: 'May 2026',
+            marks: '20%',
+            progress: 20,
+            color: '#7b61ff',
+        },
+        final: {
+            tag: '04 — Final',
+            title: 'Final Assessment',
+            desc: 'Complete system demonstration with full functionality — real-time alerts, fleet dashboard, cloud integration, and predictive risk engine all operating in a live environment.',
+            date: 'Jul 2026',
+            marks: '35%',
+            progress: 35,
+            color: '#00e5b0',
+        },
+        viva: {
+            tag: '05 — Viva',
+            title: 'Viva Examination',
+            desc: 'Comprehensive oral examination covering the full project — design decisions, technical implementation, research findings, challenges overcome, and future directions.',
+            date: 'Aug 2026',
+            marks: '20%',
+            progress: 20,
+            color: '#ffb830',
+        },
+    };
+
+    let activeCard = null;
+
+    function showDetails(key, cardEl) {
+        const d = data[key];
+        if (!d) return;
+
+        // Update active card
+        if (activeCard) activeCard.classList.remove('active');
+        cardEl.classList.add('active');
+        activeCard = cardEl;
+
+        // Update panel accent colors
+        const panel = document.getElementById('detailPanel');
+        panel.style.setProperty('--panel-color2', d.color);
+        panel.style.setProperty('--panel-color', d.color.replace(')', ', 0.07)').replace('rgb', 'rgba').replace('#', 'rgba(').replace('rgba(', 'color-mix(in srgb, ') );
+
+        // Hide empty, show content
+        document.getElementById('emptyState').style.display = 'none';
+
+        const content = document.getElementById('detailContent');
+        content.classList.remove('visible');
+        void content.offsetWidth; // reflow for re-animation
+        content.classList.add('visible');
+
+        // Fill data
+        document.getElementById('detailTag').textContent   = d.tag;
+        document.getElementById('detailTitle').textContent = d.title;
+        document.getElementById('detailDesc').textContent  = d.desc;
+        document.getElementById('detailDate').textContent  = d.date;
+        document.getElementById('detailMarks').textContent = d.marks;
+        document.getElementById('progressLabel').textContent = d.marks;
+
+        // Animate progress bar
+        const fill = document.getElementById('progressFill');
+        fill.style.width = '0%';
+        setTimeout(() => { fill.style.width = d.progress + '%'; }, 50);
+
+        // Color the fill
+        fill.style.background = `linear-gradient(90deg, ${d.color}, #7b61ff)`;
+
+        // Color the tag dot
+        const tag = document.getElementById('detailTag');
+        tag.style.color = d.color;
+    }
+</script>
+
+</body>
+</html>
